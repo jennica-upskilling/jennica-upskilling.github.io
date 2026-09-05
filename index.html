@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ABC Tutoring — Find the Right Tutor for Your Child</title>
+  <meta name="description" content="Browse qualified tutors and book available sessions online. ABC Tutoring helps your child succeed in Math, English, Science, and more." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ===== Header ===== -->
+  <header>
+    <div class="header-inner">
+      <a href="#" class="logo">
+        <div class="logo-icon">✏️</div>
+        ABC Tutoring
+      </a>
+      <a href="#tutors" class="nav-cta">Find a Tutor</a>
+    </div>
+  </header>
+
+  <!-- ===== Hero ===== -->
+  <section class="hero">
+    <div class="hero-inner">
+      <h1>Find the <span>right tutor</span><br>for your child</h1>
+      <p>Browse our qualified tutors, choose a time that works for your family, and book a session in minutes — no phone calls needed.</p>
+      <button class="hero-btn" id="hero-cta">Browse Tutors</button>
+    </div>
+  </section>
+
+  <!-- ===== Tutors Section ===== -->
+  <section class="tutors-section" id="tutors">
+    <div class="section-header">
+      <h2>Our Tutors</h2>
+      <p>Choose a subject and grade level to find the best match for your child.</p>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters">
+      <span class="filter-label">Filter by:</span>
+
+      <select id="subject-filter" class="filter-select" aria-label="Filter by subject">
+        <option value="all">All Subjects</option>
+        <option value="Math">Math</option>
+        <option value="English">English</option>
+        <option value="Science">Science</option>
+        <option value="SAT/College Prep">SAT / College Prep</option>
+      </select>
+
+      <select id="grade-filter" class="filter-select" aria-label="Filter by grade level">
+        <option value="all">All Grade Levels</option>
+        <option value="Elementary">Elementary</option>
+        <option value="Middle School">Middle School</option>
+        <option value="High School">High School</option>
+      </select>
+
+      <button id="clear-filters" class="clear-filters hidden">Clear filters</button>
+    </div>
+
+    <!-- No results -->
+    <div id="no-results" class="no-results">
+      <p>No tutors match your current filters. Try a different subject or grade level.</p>
+    </div>
+
+    <!-- Tutor Cards -->
+    <div id="tutor-grid" class="tutor-grid"></div>
+  </section>
+
+  <!-- ===== Booking Modal ===== -->
+  <div id="modal-overlay" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal">
+
+      <!-- Modal header -->
+      <div class="modal-header">
+        <h2 id="modal-title">Book a Session</h2>
+        <button class="modal-close" id="modal-close" aria-label="Close booking form">&times;</button>
+      </div>
+
+      <!-- Booking summary -->
+      <div class="booking-summary">
+        <img id="summary-photo" class="summary-photo" src="" alt="" />
+        <div class="summary-details">
+          <strong id="summary-name"></strong>
+          <span class="summary-slot" id="summary-slot"></span>
+          <span class="summary-rate" id="summary-rate"></span>
+        </div>
+      </div>
+
+      <!-- Booking form -->
+      <div class="modal-body">
+        <form id="booking-form" novalidate>
+
+          <div class="form-group">
+            <label for="form-parent-name">Your Name (Parent / Guardian)</label>
+            <input type="text" id="form-parent-name" placeholder="e.g. Jane Smith" autocomplete="name" />
+            <div class="field-error" id="err-parent-name"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="form-parent-email">Your Email</label>
+            <input type="email" id="form-parent-email" placeholder="e.g. jane@email.com" autocomplete="email" />
+            <div class="field-error" id="err-parent-email"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="form-student-name">Student's First Name</label>
+            <input type="text" id="form-student-name" placeholder="e.g. Alex" autocomplete="off" />
+            <div class="field-error" id="err-student-name"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="form-student-grade">Student's Grade Level</label>
+            <select id="form-student-grade">
+              <option value="">— Select grade level —</option>
+              <option value="K-2nd grade">K – 2nd Grade</option>
+              <option value="3rd-5th grade">3rd – 5th Grade (Elementary)</option>
+              <option value="6th-8th grade">6th – 8th Grade (Middle School)</option>
+              <option value="9th-12th grade">9th – 12th Grade (High School)</option>
+            </select>
+            <div class="field-error" id="err-student-grade"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="form-subject">Requested Subject</label>
+            <select id="form-subject">
+              <!-- Populated dynamically -->
+            </select>
+            <div class="field-error" id="err-subject"></div>
+          </div>
+
+          <button type="submit" class="submit-btn">Request This Session</button>
+        </form>
+
+        <!-- Confirmation panel -->
+        <div id="confirmation-panel" class="confirmation">
+          <div class="confirmation-icon">🎉</div>
+          <h2>You're all set!</h2>
+          <p>Your session request has been received. ABC Tutoring will be in touch shortly to confirm the details.</p>
+          <div class="confirmation-detail">
+            <span id="confirm-tutor-name"></span> &mdash; <span id="confirm-slot"></span><br>
+            Subject: <span id="confirm-subject"></span>
+          </div>
+          <button class="close-confirmation-btn" id="close-confirmation">Back to Tutors</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== Footer ===== -->
+  <footer>
+    <p>&copy; 2024 ABC Tutoring. Helping students grow, one session at a time.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
