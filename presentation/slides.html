@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ABC Tutoring — Prototype Presentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ─── Tokens ─────────────────────────────────────────────────── */
+    :root {
+      --blue:          #3b82c4;
+      --blue-dk:       #2d6aab;
+      --blue-lt:       #eff6ff;
+      --blue-bd:       #bfdbfe;
+      --orange:        #f97316;
+      --orange-lt:     #fff7ed;
+      --orange-bd:     #fed7aa;
+      --green-lt:      #f0fdf4;
+      --yellow-lt:     #fffbeb;
+      --yellow-bd:     #fde68a;
+      --text:          #1e293b;
+      --muted:         #64748b;
+      --light:         #94a3b8;
+      --border:        #e2e8f0;
+      --surface:       #f8fafc;
+      --white:         #ffffff;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      background: #d1d9e0;
+    }
+
+    /* ─── Slide frame ─────────────────────────────────────────────── */
+    .slide-outer {
+      width: 1280px;
+      margin: 44px auto;
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,.22), 0 4px 12px rgba(0,0,0,.1);
+    }
+
+    .slide {
+      width: 1280px;
+      height: 720px;
+      background: var(--white);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* ─── Header bar ──────────────────────────────────────────────── */
+    .hdr {
+      background: var(--blue);
+      height: 68px;
+      padding: 0 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #fff;
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -.01em;
+    }
+
+    .logo-mark {
+      width: 34px;
+      height: 34px;
+      background: rgba(255,255,255,.18);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .slide-num {
+      font-size: 12.5px;
+      color: rgba(255,255,255,.48);
+      font-weight: 500;
+    }
+
+    /* ─── Body ────────────────────────────────────────────────────── */
+    .body {
+      flex: 1;
+      min-height: 0;
+      padding: 34px 52px 30px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .title {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.18;
+      letter-spacing: -.02em;
+      margin-bottom: 7px;
+      flex-shrink: 0;
+    }
+
+    .subtitle {
+      font-size: 15px;
+      color: var(--muted);
+      margin-bottom: 22px;
+      flex-shrink: 0;
+    }
+
+    .content {
+      flex: 1;
+      min-height: 0;
+    }
+
+    /* ─── Layout helpers ──────────────────────────────────────────── */
+    .g2     { display: grid; grid-template-columns: 1fr 1fr;        gap: 20px; height: 100%; }
+    .g6040  { display: grid; grid-template-columns: 60fr 40fr;      gap: 28px; height: 100%; }
+    .g3     { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+
+    /* ─── Before / After cards  (slide 1) ────────────────────────── */
+    .ba {
+      border-radius: 14px;
+      padding: 22px 26px;
+      display: flex;
+      flex-direction: column;
+    }
+    .ba.before { background: var(--orange-lt); border: 1.5px solid var(--orange-bd); }
+    .ba.after  { background: var(--blue-lt);   border: 1.5px solid var(--blue-bd); }
+
+    .ba-eye {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .09em;
+      margin-bottom: 10px;
+    }
+    .before .ba-eye { color: #c2410c; }
+    .after  .ba-eye { color: var(--blue-dk); }
+
+    .ba-head {
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 18px;
+    }
+    .before .ba-head { color: #9a3412; }
+    .after  .ba-head { color: var(--blue-dk); }
+
+    .ba-list { list-style: none; display: flex; flex-direction: column; gap: 11px; }
+
+    .ba-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 11px;
+      font-size: 15px;
+      color: var(--text);
+      line-height: 1.4;
+    }
+
+    .ba-dot {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .before .ba-dot { background: var(--orange-bd); }
+    .after  .ba-dot { background: var(--blue-bd); }
+
+    /* ─── Feature list  (slide 2) ────────────────────────────────── */
+    .feat-list { list-style: none; display: flex; flex-direction: column; gap: 14px; height: 100%; justify-content: center; }
+
+    .feat-item { display: flex; align-items: flex-start; gap: 13px; }
+
+    .feat-num {
+      width: 29px;
+      height: 29px;
+      background: var(--blue);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .feat-text strong { display: block; font-size: 15.5px; font-weight: 700; color: var(--text); margin-bottom: 1px; }
+    .feat-text span   { font-size: 13px; color: var(--muted); line-height: 1.45; }
+
+    /* ─── Browser mockup ─────────────────────────────────────────── */
+    .browser {
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .browser-bar {
+      background: #f1f5f9;
+      border-bottom: 1px solid var(--border);
+      padding: 9px 13px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .dot   { width: 9px; height: 9px; border-radius: 50%; }
+    .dot-r { background: #ef4444; }
+    .dot-y { background: #f59e0b; }
+    .dot-g { background: #22c55e; }
+
+    .browser-url {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 3px 10px;
+      font-size: 11.5px;
+      color: var(--muted);
+      margin-left: 6px;
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .browser-body {
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+      background: var(--surface);
+    }
+
+    .browser-body img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top;
+      display: block;
+    }
+
+    /* ─── Placeholder ────────────────────────────────────────────── */
+    .ph {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-align: center;
+      padding: 20px;
+      background: var(--surface);
+    }
+
+    /* When placeholder is standalone (not inside browser) */
+    .ph-box {
+      border: 2px dashed #cbd5e1;
+      border-radius: 10px;
+    }
+
+    .ph-icon  { font-size: 34px; opacity: .28; }
+    .ph-label { font-size: 13px; font-weight: 700; color: var(--light); }
+    .ph-hint  { font-size: 12px; color: #b0bec5; line-height: 1.5; }
+
+    /* ─── Metric cards  (slide 3) ────────────────────────────────── */
+    .metric-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 18px 16px;
+    }
+
+    .m-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 19px;
+      margin-bottom: 11px;
+    }
+    .m-icon.blue   { background: var(--blue-lt); }
+    .m-icon.orange { background: var(--orange-lt); }
+    .m-icon.green  { background: var(--green-lt); }
+
+    .m-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+    .m-desc  { font-size: 13px; color: var(--muted); line-height: 1.52; }
+
+    /* ─── Data note  (slide 3) ───────────────────────────────────── */
+    .data-note {
+      background: var(--yellow-lt);
+      border: 1.5px solid var(--yellow-bd);
+      border-radius: 10px;
+      padding: 16px 18px;
+      display: flex;
+      gap: 11px;
+      align-items: flex-start;
+      font-size: 13px;
+      color: #78350f;
+      line-height: 1.55;
+    }
+    .data-note .ni { font-size: 17px; flex-shrink: 0; margin-top: 1px; }
+    .data-note strong { display: block; font-weight: 700; margin-bottom: 4px; }
+
+    /* ─── Decision list  (slide 4) ───────────────────────────────── */
+    .dec-list { list-style: none; display: flex; flex-direction: column; gap: 17px; height: 100%; justify-content: center; }
+
+    .dec-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 13px;
+      font-size: 16px;
+      color: var(--text);
+      line-height: 1.45;
+    }
+
+    .chk {
+      width: 24px;
+      height: 24px;
+      background: var(--blue-lt);
+      color: var(--blue-dk);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 800;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* ─── Closing box  (slide 4) ─────────────────────────────────── */
+    .closing {
+      background: linear-gradient(145deg, #eff6ff 0%, #fff7ed 100%);
+      border: 1.5px solid var(--blue-bd);
+      border-radius: 16px;
+      padding: 32px 28px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .closing-q {
+      font-size: 19px;
+      line-height: 1.65;
+      color: var(--text);
+      font-weight: 400;
+    }
+    .closing-q strong { color: var(--blue-dk); font-weight: 700; }
+
+    .closing-tag {
+      font-size: 13px;
+      color: var(--muted);
+      border-top: 1px solid var(--blue-bd);
+      padding-top: 16px;
+    }
+
+    /* ─── Print ──────────────────────────────────────────────────── */
+    @page { size: 1280px 720px; margin: 0; }
+
+    @media print {
+      body { background: none; }
+
+      .slide-outer {
+        width: 1280px;
+        margin: 0;
+        box-shadow: none;
+        border-radius: 0;
+        page-break-after: always;
+        break-after: page;
+      }
+
+      .slide-outer:last-of-type {
+        page-break-after: avoid;
+        break-after: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════ SLIDE 1 ════════════════════════════════════ -->
+<div class="slide-outer">
+  <div class="slide">
+
+    <div class="hdr">
+      <div class="logo">
+        <div class="logo-mark">✏️</div>
+        ABC Tutoring
+      </div>
+      <span class="slide-num">1 of 4</span>
+    </div>
+
+    <div class="body">
+      <div class="title">A simpler booking experience<br>for ABC Tutoring</div>
+      <div class="subtitle">Making it easy for families to find the right tutor — without the phone calls</div>
+
+      <div class="content">
+        <div class="g2">
+
+          <div class="ba before">
+            <div class="ba-eye">Before</div>
+            <div class="ba-head">Parents contact Dana by phone<br>to ask about tutors and schedule sessions</div>
+            <ul class="ba-list">
+              <li class="ba-item">
+                <div class="ba-dot">📞</div>
+                Parents call Dana to ask which tutors are available
+              </li>
+              <li class="ba-item">
+                <div class="ba-dot">📋</div>
+                Dana shares tutor details and rates one by one
+              </li>
+              <li class="ba-item">
+                <div class="ba-dot">📅</div>
+                Scheduling is coordinated back and forth over the phone
+              </li>
+              <li class="ba-item">
+                <div class="ba-dot">⏰</div>
+                Managing all of this manually is becoming too time-consuming
+              </li>
+            </ul>
+          </div>
+
+          <div class="ba after">
+            <div class="ba-eye">After</div>
+            <div class="ba-head">Families browse and book online —<br>on their own time, without calling</div>
+            <ul class="ba-list">
+              <li class="ba-item">
+                <div class="ba-dot">🔍</div>
+                Parents explore tutor profiles anytime, at their convenience
+              </li>
+              <li class="ba-item">
+                <div class="ba-dot">📅</div>
+                Families see tutor availability and choose a time that works
+              </li>
+              <li class="ba-item">
+                <div class="ba-dot">✅</div>
+                A session request is submitted in just a few minutes
+              </li>
+              <li class="ba-item">
+                <div class="ba-dot">💙</div>
+                Dana gets time back — and families get a faster experience
+              </li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════ SLIDE 2 ════════════════════════════════════ -->
+<div class="slide-outer">
+  <div class="slide">
+
+    <div class="hdr">
+      <div class="logo">
+        <div class="logo-mark">✏️</div>
+        ABC Tutoring
+      </div>
+      <span class="slide-num">2 of 4</span>
+    </div>
+
+    <div class="body">
+      <div class="title">From finding a tutor to booking a session</div>
+      <div class="subtitle">Everything a parent needs, in one friendly place</div>
+
+      <div class="content">
+        <div class="g6040">
+
+          <ul class="feat-list">
+            <li class="feat-item">
+              <div class="feat-num">1</div>
+              <div class="feat-text">
+                <strong>Browse tutor profiles</strong>
+                <span>Photo, subjects taught, grade levels, and hourly rate — all visible on one card</span>
+              </div>
+            </li>
+            <li class="feat-item">
+              <div class="feat-num">2</div>
+              <div class="feat-text">
+                <strong>Filter by subject and grade level</strong>
+                <span>Parents quickly narrow down tutors that are the right fit for their child</span>
+              </div>
+            </li>
+            <li class="feat-item">
+              <div class="feat-num">3</div>
+              <div class="feat-text">
+                <strong>Choose an available time</strong>
+                <span>Each tutor shows their open slots — parents pick what works for the family</span>
+              </div>
+            </li>
+            <li class="feat-item">
+              <div class="feat-num">4</div>
+              <div class="feat-text">
+                <strong>Submit a simple booking request</strong>
+                <span>A short form collects only what's needed — no unnecessary questions</span>
+              </div>
+            </li>
+            <li class="feat-item">
+              <div class="feat-num">5</div>
+              <div class="feat-text">
+                <strong>Receive instant confirmation</strong>
+                <span>A friendly message confirms the tutor, time, and subject right away</span>
+              </div>
+            </li>
+            <li class="feat-item">
+              <div class="feat-num">6</div>
+              <div class="feat-text">
+                <strong>Booked times become unavailable</strong>
+                <span>After a booking, that time is marked unavailable in the prototype.</span>
+              </div>
+            </li>
+          </ul>
+
+          <div class="browser">
+            <div class="browser-bar">
+              <div class="dot dot-r"></div>
+              <div class="dot dot-y"></div>
+              <div class="dot dot-g"></div>
+              <div class="browser-url">jennica-upskilling.github.io</div>
+            </div>
+            <div class="browser-body">
+              <img src="screenshot-site.png" alt="ABC Tutoring website">
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════ SLIDE 3 ════════════════════════════════════ -->
+<div class="slide-outer">
+  <div class="slide">
+
+    <div class="hdr">
+      <div class="logo">
+        <div class="logo-mark">✏️</div>
+        ABC Tutoring
+      </div>
+      <span class="slide-num">3 of 4</span>
+    </div>
+
+    <div class="body">
+      <div class="title">Understanding what parents need</div>
+      <div class="subtitle">The website automatically tracks three things Dana asked to measure</div>
+
+      <div class="content" style="display:flex; flex-direction:column;">
+
+        <!-- Three metric cards -->
+        <div class="g3" style="margin-bottom:18px; flex-shrink:0;">
+          <div class="metric-card">
+            <div class="m-icon blue">📊</div>
+            <div class="m-title">Subjects Parents Search For</div>
+            <div class="m-desc">See which subjects parents are looking for most often — so you know where demand is highest and can plan accordingly.</div>
+          </div>
+          <div class="metric-card">
+            <div class="m-icon orange">🔄</div>
+            <div class="m-title">Booking Journey</div>
+            <div class="m-desc">See how many visitors start a booking and how many actually complete it — and spot where families leave before finishing.</div>
+          </div>
+          <div class="metric-card">
+            <div class="m-icon green">✅</div>
+            <div class="m-title">Completed Bookings</div>
+            <div class="m-desc">Track how many session requests are successfully submitted as real families start using the site.</div>
+          </div>
+        </div>
+
+        <!-- Dashboard screenshot + data note -->
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; flex:1; min-height:0;">
+
+          <div class="browser">
+            <div class="browser-bar">
+              <div class="dot dot-r"></div>
+              <div class="dot dot-y"></div>
+              <div class="dot dot-g"></div>
+              <div class="browser-url">app.posthog.com — ABC Tutoring Customer Analytics</div>
+            </div>
+            <div class="browser-body">
+              <img src="screenshot-dashboard.png" alt="PostHog analytics dashboard">
+            </div>
+          </div>
+
+          <div style="display:flex; align-items:center;">
+            <div class="data-note">
+              <span class="ni">💡</span>
+              <div>
+                <strong>A note on current numbers</strong>
+                The values shown in the analytics dashboard today come from prototype testing — not real visitor traffic. These metrics become meaningful as families start using the live website. The prototype demonstrates exactly how subject demand and booking completions will be measured.
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════ SLIDE 4 ════════════════════════════════════ -->
+<div class="slide-outer">
+  <div class="slide">
+
+    <div class="hdr">
+      <div class="logo">
+        <div class="logo-mark">✏️</div>
+        ABC Tutoring
+      </div>
+      <span class="slide-num">4 of 4</span>
+    </div>
+
+    <div class="body">
+      <div class="title">Turning website activity into useful decisions</div>
+      <div class="subtitle">What these insights allow Dana to do over time</div>
+
+      <div class="content">
+        <div class="g6040">
+
+          <ul class="dec-list">
+            <li class="dec-item">
+              <div class="chk">✓</div>
+              <div><strong>Know which subjects are in highest demand</strong> — and make sure the right tutors are available to meet it</div>
+            </li>
+            <li class="dec-item">
+              <div class="chk">✓</div>
+              <div><strong>Adjust tutor schedules and availability</strong> to match what parents are actually searching for</div>
+            </li>
+            <li class="dec-item">
+              <div class="chk">✓</div>
+              <div><strong>See exactly where families leave before booking</strong> — and improve that step to increase completions</div>
+            </li>
+            <li class="dec-item">
+              <div class="chk">✓</div>
+              <div><strong>Track how many bookings come in over time</strong> — and grow the business with real data, not guesswork</div>
+            </li>
+            <li class="dec-item">
+              <div class="chk">✓</div>
+              <div><strong>Reduce manual phone coordination</strong> — families book themselves, freeing Dana's time for what matters most</div>
+            </li>
+          </ul>
+
+          <div class="closing">
+            <p class="closing-q">
+              ABC Tutoring now has a prototype that makes booking <strong>simpler and faster for families</strong> — and gives Dana the <strong>visibility she needs</strong> to grow her business with confidence.
+            </p>
+            <p class="closing-tag">
+              Built for Dana · ABC Tutoring prototype · 2026
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
